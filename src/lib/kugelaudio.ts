@@ -12,10 +12,19 @@ export function pcmToWav(pcm: Buffer, sampleRate = 24000, channels = 1, bitsPerS
   return Buffer.concat([header, pcm]);
 }
 
-export async function saveVoiceFile(id: string, bytes: Buffer, isPcm = true): Promise<string> {
-  const file = `data/voice/${id}.wav`;
-  const wav = isPcm ? pcmToWav(bytes) : bytes;
+export async function generateVoice(params: { text: string; voiceId: string; leadId: string }) {
+  const key = process.env.KUGELAUDIO_API_KEY;
+  if (!key) throw new Error('Missing KUGELAUDIO_API_KEY');
+  const res = await fetch('https://api.kugelaudio.com/v1/tts/generate', {
+    method: 'POST',
+    headers: { authorization: `Bearer ${key}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ text: params.text, model_id: 'kugel-1-turbo', voice_id: params.voiceId, language: 'en-US' })
+  });
+  if (!res.ok) throw new Error(`KugelAudio failed: ${res.status}`);
+  const arr = Buffer.from(await res.arrayBuffer());
+  const wav = pcmToWav(arr);
   await fs.mkdir('data/voice', { recursive: true });
-  await fs.writeFile(file, wav);
-  return file;
+  const filepath = `data/voice/${params.leadId}.wav`;
+  await fs.writeFile(filepath, wav);
+  return { audioUrl: `/api/voice/${params.leadId}`, durationMs: 0, filepath };
 }
