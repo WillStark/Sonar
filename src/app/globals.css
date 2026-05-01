@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sonar-bg: #09090b;
+  --color-sonar-card: #18181b;
+  --color-sonar-border: #27272a;
+  --color-sonar-accent: #38bdf8;
+  --color-sonar-accent-soft: #0ea5e9;
+}
+
+html, body {
+  background: var(--color-sonar-bg);
+  color: #f4f4f5;
+}
+
+.sonar-glow {
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2), 0 0 32px rgba(56, 189, 248, 0.15);
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid var(--color-sonar-accent);
+  animation: pulse-ring 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -1,30 +1,67 @@
 import fs from 'node:fs/promises';
+import path from 'node:path';
+import { pcmToWav, synthDemoWav } from './wav';
 
-export function pcmToWav(pcm: Buffer, sampleRate = 24000, channels = 1, bitsPerSample = 16): Buffer {
-  const blockAlign = channels * bitsPerSample / 8;
-  const byteRate = sampleRate * blockAlign;
-  const header = Buffer.alloc(44);
-  header.write('RIFF', 0); header.writeUInt32LE(36 + pcm.length, 4); header.write('WAVE', 8);
-  header.write('fmt ', 12); header.writeUInt32LE(16, 16); header.writeUInt16LE(1, 20);
-  header.writeUInt16LE(channels, 22); header.writeUInt32LE(sampleRate, 24); header.writeUInt32LE(byteRate, 28);
-  header.writeUInt16LE(blockAlign, 32); header.writeUInt16LE(bitsPerSample, 34); header.write('data', 36);
-  header.writeUInt32LE(pcm.length, 40);
-  return Buffer.concat([header, pcm]);
-}
+export { pcmToWav } from './wav';
 
-export async function generateVoice(params: { text: string; voiceId: string; leadId: string }) {
+const VOICE_DIR = path.join(process.cwd(), 'data', 'voice');
+
+export type VoiceResult = { audioUrl: string; durationMs: number; filepath: string; fallback?: boolean };
+
+export async function generateVoice(params: {
+  text: string;
+  voiceId?: string;
+  leadId: string;
+}): Promise<VoiceResult> {
+  await fs.mkdir(VOICE_DIR, { recursive: true });
+  const filepath = path.join(VOICE_DIR, `${params.leadId}.wav`);
+  const audioUrl = `/api/voice/${params.leadId}`;
+
   const key = process.env.KUGELAUDIO_API_KEY;
-  if (!key) throw new Error('Missing KUGELAUDIO_API_KEY');
+  if (!key) {
+    const wordCount = params.text.split(/\s+/).filter(Boolean).length;
+    const durationMs = Math.max(2500, Math.round((wordCount / 2.6) * 1000));
+    const wav = synthDemoWav(durationMs, hashSeed(params.leadId));
+    await fs.writeFile(filepath, wav);
+    return { audioUrl, durationMs, filepath, fallback: true };
+  }
+
   const res = await fetch('https://api.kugelaudio.com/v1/tts/generate', {
     method: 'POST',
-    headers: { authorization: `Bearer ${key}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ text: params.text, model_id: 'kugel-1-turbo', voice_id: params.voiceId, language: 'en-US' })
+    headers: {
+      authorization: `Bearer ${key}`,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      text: params.text,
+      model_id: 'kugel-1-turbo',
+      voice_id: params.voiceId ?? 'business_us_1',
+      language: 'en-US'
+    })
   });
+
   if (!res.ok) throw new Error(`KugelAudio failed: ${res.status}`);
-  const arr = Buffer.from(await res.arrayBuffer());
-  const wav = pcmToWav(arr);
-  await fs.mkdir('data/voice', { recursive: true });
-  const filepath = `data/voice/${params.leadId}.wav`;
+
+  const buf = Buffer.from(await res.arrayBuffer());
+  const isWav = buf.length > 12 && buf.subarray(0, 4).toString() === 'RIFF';
+  const wav = isWav ? buf : pcmToWav(buf);
   await fs.writeFile(filepath, wav);
-  return { audioUrl: `/api/voice/${params.leadId}`, durationMs: 0, filepath };
+  const durationMs = estimateDurationMs(wav);
+  return { audioUrl, durationMs, filepath };
+}
+
+function hashSeed(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+function estimateDurationMs(wav: Buffer): number {
+  if (wav.length < 44) return 0;
+  const sampleRate = wav.readUInt32LE(24);
+  const bitsPerSample = wav.readUInt16LE(34);
+  const channels = wav.readUInt16LE(22);
+  const dataLen = wav.length - 44;
+  const samples = dataLen / (channels * (bitsPerSample / 8));
+  return Math.round((samples / sampleRate) * 1000);
 }

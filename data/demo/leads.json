@@ -1,17 +1,119 @@
 [
   {
-    "name": "Sarah Chen",
-    "company": "Upstart",
-    "title": "VP Collections"
+    "id": "demo_1",
+    "person": {
+      "name": "Sarah Chen",
+      "title": "VP, Collections",
+      "linkedinUrl": "https://www.linkedin.com/in/sarah-chen-collections"
+    },
+    "company": {
+      "name": "Upstart",
+      "domain": "upstart.com",
+      "industry": "consumer credit",
+      "recentSignal": "Q3 charge-offs ticked up to 7.4% as the BNPL portfolio rolled forward"
+    },
+    "fit_score": 9,
+    "fit_reasons": [
+      "Senior collections title",
+      "Target lending vertical",
+      "Recent public signal",
+      "US geography"
+    ],
+    "pain_hypothesis": "Upstart’s Q3 charge-off creep is putting Sarah’s collections org under structural pressure. A voice-AI layer could absorb the call-volume spike without growing headcount and lift recovery 12–15%.",
+    "voice": {
+      "script": "Hi Sarah, quick voice memo from Callbook. I noticed Upstart’s Q3 charge-offs ticked up to 7.4 percent — feels like exactly the moment a voice-AI layer on your collections stack would compound. We help lenders like Upstart recover twelve to fifteen percent more without growing ops. Worth sixty seconds next week?",
+      "audioUrl": "/api/voice/demo_1",
+      "durationMs": 19615
+    },
+    "email": {
+      "subject": "Quick idea for Upstart’s collections team",
+      "body": "Hi Sarah,\n\nNoticed Upstart’s Q3 charge-offs ticked up to 7.4% as the BNPL book rolled forward. We help lenders like Upstart recover 12–15% more on aged receivables with AI voice agents that make the calls your team can’t get to — same workflow, no extra headcount.\n\nWorth a 15-minute look next week?\n\n— Callbook"
+    },
+    "linkedin": {
+      "dm": "Hi Sarah — saw Upstart’s Q3 charge-off uptick. Curious if your team has thought about voice-AI for collections. We’re seeing 12–15% lift on aged receivables for similar lenders. Quick chat next week?"
+    },
+    "sources": [
+      "https://ir.upstart.com",
+      "https://www.consumerfinance.gov/data-research/consumer-complaints/"
+    ],
+    "enriched_at": "2026-05-01T02:43:13.596Z"
   },
   {
-    "name": "David Kim",
-    "company": "LendingClub",
-    "title": "Head of Recovery"
+    "id": "demo_2",
+    "person": {
+      "name": "David Kim",
+      "title": "Head of Recovery",
+      "linkedinUrl": "https://www.linkedin.com/in/david-kim-recovery"
+    },
+    "company": {
+      "name": "LendingClub",
+      "domain": "lendingclub.com",
+      "industry": "consumer credit",
+      "recentSignal": "Recovery org hiring across SF and Lehi; CFPB filings spotlight collections experience"
+    },
+    "fit_score": 8.5,
+    "fit_reasons": [
+      "Senior recovery title",
+      "Target lending vertical",
+      "Hiring spike signal",
+      "US geography"
+    ],
+    "pain_hypothesis": "LendingClub is scaling its recovery team manually exactly when AI voice can collapse the cost-per-contact curve. David is the buyer who feels the unit economics of every new headcount.",
+    "voice": {
+      "script": "Hey David, quick note from Callbook. Saw LendingClub’s recovery org is hiring across SF and Lehi — we help lenders hit those numbers without doubling the team. Voice-AI agent that calls aged accounts, books promises-to-pay, hands off live to your specialists. Twelve to fifteen percent more recovered. Worth sixty seconds?",
+      "audioUrl": "/api/voice/demo_2",
+      "durationMs": 19231
+    },
+    "email": {
+      "subject": "Recovery hiring at LendingClub — a 12–15% lift without the headcount",
+      "body": "Hi David,\n\nNoticed the recovery hiring push across SF and Lehi. We help lenders like LendingClub recover 12–15% more on aged receivables with AI voice agents — same playbook your team runs, just without the headcount math.\n\nHappy to share what we’re seeing on first-pass right-party-contact rates. 15 minutes next week?\n\n— Callbook"
+    },
+    "linkedin": {
+      "dm": "Hi David — saw LendingClub is scaling recovery. Voice-AI could close the headcount gap with 12–15% more recovered on aged accounts. Worth a quick chat?"
+    },
+    "sources": [
+      "https://www.lendingclub.com/company/careers",
+      "https://www.consumerfinance.gov/data-research/consumer-complaints/"
+    ],
+    "enriched_at": "2026-05-01T02:43:13.653Z"
   },
   {
-    "name": "Maria Lopez",
-    "company": "SoFi",
-    "title": "Director of Collections"
+    "id": "demo_3",
+    "person": {
+      "name": "Maria Lopez",
+      "title": "Director of Collections",
+      "linkedinUrl": "https://www.linkedin.com/in/maria-lopez-collections"
+    },
+    "company": {
+      "name": "SoFi",
+      "domain": "sofi.com",
+      "industry": "consumer credit",
+      "recentSignal": "Lending segment grew 31% YoY; new VP Collections role posted, late-stage delinquencies under watch"
+    },
+    "fit_score": 8,
+    "fit_reasons": [
+      "Senior collections title",
+      "Target lending vertical",
+      "Growth + delinquency signal",
+      "US geography"
+    ],
+    "pain_hypothesis": "SoFi’s lending growth is outpacing the collections team that has to clean up after it. Maria is staring at the operating leverage gap that a voice-AI layer is built to close.",
+    "voice": {
+      "script": "Hi Maria, fast voice memo from Callbook. SoFi’s lending segment grew thirty-one percent year-over-year and your team is feeling that downstream. We deploy voice-AI that picks up the aged accounts your specialists can’t get to — twelve to fifteen percent more recovered, no new headcount. Worth a quick look?",
+      "audioUrl": "/api/voice/demo_3",
+      "durationMs": 18846
+    },
+    "email": {
+      "subject": "SoFi grew 31% — the collections side of that story",
+      "body": "Hi Maria,\n\n31% YoY lending growth at SoFi means a lot more accounts moving through your collections funnel. We help lenders like SoFi recover 12–15% more on aged receivables with AI voice agents — absorbs the volume spike, keeps your specialists on the highest-value calls.\n\nOpen to a quick walk-through?\n\n— Callbook"
+    },
+    "linkedin": {
+      "dm": "Hi Maria — saw SoFi’s 31% lending growth. Curious how that’s landing in collections — we’re seeing 12–15% lift on aged accounts with voice-AI. Worth a quick chat?"
+    },
+    "sources": [
+      "https://www.sofi.com/press/",
+      "https://investors.sofi.com"
+    ],
+    "enriched_at": "2026-05-01T02:43:13.708Z"
   }
 ]

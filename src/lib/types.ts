@@ -11,3 +11,12 @@ export type LenderLead = {
   sources: string[];
   enriched_at: string;
 };
+
+export type StreamEvent =
+  | { type: 'phase'; phase: 'crawl_start' | 'crawl_done' | 'score_done' | 'enrich_start' }
+  | { type: 'enrich_progress'; done: number; total: number }
+  | { type: 'lead_partial'; lead: LenderLead }
+  | { type: 'done'; leads: LenderLead[]; stats: Record<string, unknown>; warning?: string }
+  | { type: 'error'; error: string };
+
+export type IcpInput = { industry: string; title: string; geography: string };
